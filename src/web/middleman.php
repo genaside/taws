@@ -1,6 +1,242 @@
+#!/usr/bin/php
+
 <?php
-  include './config/server_config.php';
-  //error_reporting( 0 );
+  // This is a standalone
+ 
+  include './config/server_config.php';  
+  
+  // Set some globals here
+  
+  $shortopts  = "";  
+  $shortopts .= "h";
+  $shortopts .= "c"; 
+  $shortopts .= "u";
+  $longopts  = array(    
+    "help",
+    "check",
+    "update"
+  );  
+  $options = getopt( $shortopts, $longopts );
+  
+  foreach( $options as $opt=>$opt_value ){
+    switch( $opt ){      
+      case 'h':
+      case 'help':
+        echo "\n";
+        echo "This a standalone script for doing varios things out side taws\n";
+        echo "-h     --help     display options and help\n";
+        echo "-c     --check    Check if database is up to date\n";
+        //echo "       --start    Start Automated Updates\n";
+        //echo "       --stop     Stop Automated Updates\n";
+        echo "-u     --update   Update the database and restart sphinx\n";       
+        //echo "-x                Update by removing data only\n";
+        //echo "-z                Update by inserting data only\n";        
+        echo "\n";
+      break;
+      case 'c':
+      case 'check':
+        echo "\n";
+        $value = isUpdated();
+        if( $value > 0  ){
+          $units = array(
+            'week' => 604800,
+            'day' => 86400,
+            'hour' => 3600//,
+            //'minute' => 60,
+            //'second' => 1
+          );
+          
+          $strs = array();
+          foreach( $units as $name=>$int ){
+            if( $value < $int ){
+              continue;
+            }              
+            $num = (int) ($value / $int);
+            $value = $value % $int;
+            $strs[] = "$num $name".(($num == 1) ? '' : 's');
+          }
+
+          echo "Your behind -> " . implode(', ', $strs);         
+        }else if( $value == 0 ){
+          echo "You're up to date, congrats go and party";
+        }else{
+          echo "It doesnt seem you've did the initial update yet";  
+        } 
+        echo "\n";
+      break;    
+      case 'u':
+      case 'update':
+        $value = isUpdated();
+        if( $value == 0 ){
+          echo "You're already up to date.\n";
+        }else{
+          echo "Going to update, this may take a while...\n";
+          update();
+        }        
+        break;
+    }
+  }
+  
+    
+  /**
+  * Checks to see if the local database is in sync with the remote server 
+  * @returns -1 if your just starting or an error came up, 0 if up to date, and n > 0 the number of days lost
+  * NOTE there are two ways to do this, i think creating a timestamp is best.
+  */
+  function isUpdated(){
+    global $taws_server_config;
+    $time = -1;
+    $filepath = "./serverdata/db_timestamp.txt";
+    
+    // check if the timestamp file exist, assuming if it doesnt , were stating a new
+    if( !file_exists( $filepath ) ){
+      return -1;
+    }else{
+      $time = unserialize( file_get_contents( $filepath ) );
+      if( !is_numeric( $time ) ){
+        return -1;
+      }
+    }
+    if( $time < 1402980743 ){
+      return -1;
+    }
+    
+    // Now lets talk to the remote server to compare
+    $postdata = http_build_query(
+      array()
+    );
+    $opts = array('http' =>
+      array(
+        'method'  => 'POST',
+        'header'  => 'Content-type: application/x-www-form-urlencoded',
+        'content' => $postdata
+      )
+    );
+    $context = stream_context_create( $opts );
+    $rtime = file_get_contents( "https://www.genaside.net/taws/to_update.php", false, $context );
+    
+    if( ( $rtime - $time ) > 3600 ){ // Don't spam, give it some time
+      return $rtime - $time;
+    }else{      
+      return 0;
+    }           
+  }
+  
+  /**
+  * Dynamicly download cvs files dependings on the users query, since this
+  * can be huge lets take it in little bits
+  * Display progress
+  * NOTE Iam going to get the full dumps in compress form instead.
+  */
+  function update(){
+    global $taws_server_config;
+    
+    $languages = $taws_server_config[ 'sql_update_language' ]; 
+    
+    // TODO Show a sign that the data is being updated, so server.php knows
+    // Mysql
+    $mysqli = new mysqli( $taws_server_config[ 'mysql_server' ], 
+                          $taws_server_config[ 'mysql_db_user' ], 
+                          $taws_server_config[ 'mysql_db_pass' ], 
+                          $taws_server_config[ 'mysql_db_name' ]);
+                          
+    $mysqli->options( MYSQLI_OPT_LOCAL_INFILE, true );    
+    
+    $driver = new mysqli_driver();
+    $driver->report_mode = MYSQLI_REPORT_ALL;
+    // Delete tables
+    $mysqli->multi_query( file_get_contents( './sql/delete.mysql' ) );      
+    while( $mysqli->more_results() ){ // I dont see anyway to escape this
+      $mysqli->next_result(); 
+    }
+    
+    // Recreate tables    
+    $mysqli->multi_query( file_get_contents( './sql/create.mysql' ) );
+    while( $mysqli->more_results() ){ // I dont see anyway to escape this
+      $mysqli->next_result(); 
+    }
+    
+        
+    // Start downloading a db, extract it, and insert it into the sql. For each language
+    foreach( $languages as $language ){      
+      $postdata = http_build_query(
+	array(
+	  'language' => $language
+	)
+      );      
+      $opts = array('http' =>
+	array(
+	  'method'  => 'POST',
+	  'header'  => 'Content-type: application/x-www-form-urlencoded',
+	  'content' => $postdata
+	)
+      );
+      $context = stream_context_create($opts);  
+      $res = file_put_contents( 
+        "./serverdata/db_temp.tar.gz", 
+        fopen( "https://www.genaside.net/taws/downloads/db_$language.tar.gz", 'r', false, $context ) 
+      );
+      if( $res == false ){
+        echo "\nError: downloading database\n";
+        continue;
+      }
+      
+      // Extract
+      exec( "tar -zxvf ./serverdata/db_temp.tar.gz -C ./serverdata/" );
+      
+      // Insert
+      // Before populating tables lets set some things
+      $mysqli->query( "SET sql_mode='NO_AUTO_VALUE_ON_ZERO';" );
+      $mysqli->query( "SET FOREIGN_KEY_CHECKS = 0;" );
+      $mysqli->query( "SET UNIQUE_CHECKS = 0;" );
+      
+      
+      $query = <<<EOT
+      LOAD DATA LOCAL INFILE './serverdata/dump/domains.csv' INTO TABLE Domains 
+      FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES 
+      (id,domain,http_https,type_id,subject_id,description);
+EOT;
+      $mysqli->query( $query );
+      echo "Done populating Domains table.\n";
+    
+      $query = <<<EOT
+      LOAD DATA LOCAL INFILE './serverdata/dump/data.csv' INTO TABLE Data 
+      FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES 
+      (id,page,domain_id,title,description,content,language_id,published_time,timestamp,frequency,scheme_id);
+EOT;
+      $mysqli->query( $query );
+      echo "Done populating Data table.\n";
+    
+      $query = <<<EOT
+      LOAD DATA LOCAL INFILE './serverdata/dump/ubm.csv' INTO TABLE ubm 
+      FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES 
+      ( query, data_id, rank );
+EOT;
+      $mysqli->query( $query );
+      echo "Done populating UBM table.\n";
+      
+      // After populating tables lets set some things
+      $mysqli->query( 'SET FOREIGN_KEY_CHECKS = 1' );  
+      $mysqli->query( "SET UNIQUE_CHECKS = 1;" );
+    }    
+    
+    // Remove some files, to free up space
+    unlink( './serverdata/db_temp.tar.gz' );
+    
+    // Set up time stamp
+    file_put_contents( './serverdata/db_timestamp.txt', serialize( time() ) );
+    
+    // Now lets update sphinx and call it a day
+    passthru( "searchd --stop; sleep 2; indexer --all; searchd" );    
+    
+  }
+  
+  
+  function download_db(){
+  }
+  
+  
+  exit();
   
   $ltime = 0;
   $rtime = 0;  

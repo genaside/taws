@@ -273,7 +273,7 @@ EOT;
     $s->SetLimits( (int)$_POST[ 'offset' ], (int)$_POST[ 'limit' ] );  
     
     // Conditions set now lets query, from idexes
-    $results = $s->query( $searchstring, "taws_idx_p1_c1 taws_idx_p1_c2" );
+    $results = $s->query( $searchstring, "taws_idx" );
     $s->close();//Ok got what i want, end sphinx
     return $results;
   }

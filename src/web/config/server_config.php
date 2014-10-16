@@ -9,8 +9,17 @@ $taws_server_config = array();
 // General SQL
 ///////////////
 
-//What sql program will you like to use? Only 'mysql' and 'sqlite' is supported for now.
+// What sql program will you like to use? 
+// NOTE only mysql is supported now
 $taws_server_config[ 'sql_program' ] = 'mysql';//may need to be remove
+
+
+// The Database are seperated by language, set the language you want
+// NOTE make sure its in an array
+$taws_server_config[ 'sql_update_language' ] = [ 'english' ];
+
+// when is it a good time to update when in automated update mode?
+//$taws_server_config[ 'sql_update_time' ] = "23:00";
 
 //////////////////
 // Mysql Options
