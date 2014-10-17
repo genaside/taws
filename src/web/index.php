@@ -53,7 +53,7 @@ EOT;
   <meta charset="UTF-8">
   <link rel="icon" href="./images/taws-favicon.png">
   <link rel="stylesheet" type="text/css" href="./style.css">
-  <link rel="stylesheet" type="text/css" href="./js/jquery-ui/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="./includes/js/jquery-ui/jquery-ui.css">
   
   <script src="./includes/js/jquery-2.1.1.js"></script>
   <script src="./includes/js/jquery-ui/jquery-ui.js"></script>

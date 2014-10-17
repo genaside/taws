@@ -1,9 +1,11 @@
 #!/bin/bash
+exit
+
 
 cert_dir='/etc/ssl/taws/' 
 site_dir='/var/www/taws/'
 
-#exit
+
 
 # Try to create directory for the self signed certs
 #mkdir -pv $cert_dir
