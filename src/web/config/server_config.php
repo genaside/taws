@@ -69,7 +69,7 @@ $taws_server_config[ 'enable_dc_ubm' ] = true;
 //////////////////////
 // The Database are seperated by language, set the language you want
 // NOTE make sure its in an array
-$taws_server_config[ 'sql_update_language' ] = [ 'spanish' ];
+$taws_server_config[ 'sql_update_language' ] = [ 'english' ];
 
 
 ?>

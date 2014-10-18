@@ -1,5 +1,5 @@
 #!/bin/bash
-exit
+#exit
 
 
 cert_dir='/etc/ssl/taws/' 
