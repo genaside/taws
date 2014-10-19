@@ -13,7 +13,7 @@ crawler database(search) that is done by Genaside(me).
 
 Go [here](https://github.com/genaside/taws/wiki) for more information and installation guides
 
-Go [here](http://www.genaside.net:4132/) to interact with taws on my server
+Go [here](http://www.genaside.net:4132/) to interact with taws on my server( I do my tests there, so it may not work all the time )
 
 ![home](http://www.genaside.net/taws/images/ex1.png)
 ![basic search](http://www.genaside.net/taws/images/ex2.png)
