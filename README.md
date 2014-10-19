@@ -1,5 +1,5 @@
-Taws
-====
+Taws 0.0.1 beta
+===============
 
 Taws is an attempt for a personal and anonymous web search engine. 
 When a user tries to search using an engine( google ), 
