@@ -9,9 +9,10 @@ $taws_server_config = array();
 // General SQL
 ///////////////
 
-// What sql program will you like to use? 
-// NOTE only mysql is supported now
+// What sql program will you like to use? mysql, postgresql, sqlite
 $taws_server_config[ 'sql_program' ] = 'mysql';
+//$taws_server_config[ 'sql_program' ] = 'postgresql';
+//$taws_server_config[ 'sql_program' ] = 'sqlite';
 
 //////////////////
 // Mysql Options
@@ -29,13 +30,36 @@ $taws_server_config[ 'mysql_db_user' ] = 'taws';
 // Password for database
 $taws_server_config[ 'mysql_db_pass' ] = '';
 
+// Port of server
+$taws_server_config[ 'mysql_db_port' ] = 3306;
+
+
+///////////////////////
+// PostgreSQL otions //
+///////////////////////
+
+//location of the sqlite file
+$taws_server_config[ 'postgresql_server' ] = 'localhost';
+
+// Name of database
+$taws_server_config[ 'postgresql_db_name' ] = 'taws_db';
+
+// User name for database
+$taws_server_config[ 'postgresql_db_user' ] = 'taws';
+
+// Password for database
+$taws_server_config[ 'postgresql_db_pass' ] = '';
+
+// Port of server
+$taws_server_config[ 'postgresql_db_port' ] = 5432;
+
 
 //////////////////
 // SQLite otions
 //////////////////
 
-//location of the sqlite file
-//$taws_server_config[ 'sqlite_file_path' ] = './serverdata/masterv.sqlite';
+// location of the sqlite db file
+$taws_server_config[ 'sqlite_db_path' ] = '';
 
 //////////////////
 // Sphinx otions
@@ -69,7 +93,7 @@ $taws_server_config[ 'enable_dc_ubm' ] = true;
 //////////////////////
 // The Database are seperated by language, set the language you want
 // NOTE make sure its in an array
-$taws_server_config[ 'sql_update_language' ] = [ 'english' ];
+$taws_server_config[ 'sql_update_language' ] = [ 'english', 'spanish' ];
 
 
 ?>

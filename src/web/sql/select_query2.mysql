@@ -1,0 +1,11 @@
+SELECT
+  Data.id AS id,
+  Data.title AS page_title,
+  Data.description AS page_description,
+  CONCAT( Domains.domain, '/', COALESCE( page, '' ) ) AS page_url,
+  Data.scheme_id AS page_scheme,
+  Domains.domain AS domain_name
+FROM Data
+INNER JOIN Domains ON Data.domain_id = Domains.id
+WHERE Data.id IN( $ids )
+ORDER BY frequency DESC;

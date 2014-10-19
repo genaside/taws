@@ -25,3 +25,6 @@ Stuff todo for first beta release 0.0.1
 + IF a functions looks to big, dont worry it will be broken up when things get shared
 # tooltip for most things.
 # For single words find dictionary sites and other site to populate UMB, hit 3 birds with on stone.
+- Add another php file, so server.php can send prefetch data to it and retrieve it for later.
+- Add some little images and options to results to indicate 'domain has been red flagged by comminty',
+  'url is broken or has WRONG information', and maybe some other stuff.

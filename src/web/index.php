@@ -177,7 +177,7 @@ EOT;
   <script src="./client.js"></script>
 </head>
 <body>   
-  <h2>Beta 0.0.1 : This site is for testing only</h2>
+  <h2>Beta 0.0.1 : This site is for testing only<<>>> The server is being tested now </h2>
   <img id="homepage_logo" src="./images/taws-logo.png">
   <h2 id="homepage_logo_name">Taws</h2>
     
