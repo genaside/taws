@@ -15,10 +15,10 @@ Go [here](https://github.com/genaside/taws/wiki) for How-to guides and other inf
 
 Go [here](http://www.genaside.net:4132/) to try out Taws on my server( I do my tests there, so version might be different )
 
-![home](http://www.genaside.net/taws/images/ex1.png)
-![basic search](http://www.genaside.net/taws/images/ex2.png)
-![phrase completetion](http://www.genaside.net/taws/images/ex3.png)
-![filter search](http://www.genaside.net/taws/images/ex4.png)
+![home](http://www.genaside.net/taws/images/ex1_.png)
+![basic search](http://www.genaside.net/taws/images/ex2_.png)
+![phrase completetion](http://www.genaside.net/taws/images/ex3_.png)
+![filter search](http://www.genaside.net/taws/images/ex4_.png)
 ![language search](http://www.genaside.net/taws/images/ex5.png)
 
 ![mobile home](http://www.genaside.net/taws/images/exx1.png)
