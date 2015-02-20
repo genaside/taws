@@ -1,0 +1,22 @@
+taws v0.0.2 beta  genaside.net
+
+Taws
+  * Added support for mobile devices.
+  * Change advance search gui.
+  * Improved database updater.  
+  * Fixed 'order by' between ubm and sphinx.
+  * Included a generic sql to handler handle mysql and postgresql.
+  * Postgresql has been romoved, but will later be reinitialized in a later version.
+  * Added RSS feed search for testing.
+  * Added Files(pdf,torrent) search for testing.
+  * Added user defined 'post query' for deletion of unwanted data.
+  * Added option to middleman to update from a local file.
+  * Changed and improved the search algorithm 
+Sphinx
+  * Added more stopwords files for more lanuages
+  * Seperated indexes by lanuages.
+  * Fixed The chinese, japanese, and arabic not being searchable
+Apache
+  * Remove access to middleman.php. 
+Other
+  * Other Minor fixes and changes.

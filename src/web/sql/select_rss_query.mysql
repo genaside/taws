@@ -1,0 +1,13 @@
+SELECT  
+  CASE 
+    WHEN scheme_id = 1 THEN 'http' 
+    WHEN scheme_id = 2 THEN 'https' 
+    ELSE 'error'
+  END AS scheme,  
+  Data_RSS.title AS page_title,
+  Data_RSS.description AS page_description,
+  CONCAT( Domains.domain, '/', COALESCE( page, '' ) ) AS page_url,  
+  Domains.domain
+FROM Data_RSS
+INNER JOIN Domains ON Data_RSS.domain_id = Domains.id
+WHERE Data_RSS.id $ids;

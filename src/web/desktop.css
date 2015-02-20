@@ -1,0 +1,414 @@
+html, body{
+  margin: 0;
+  padding: 0;  
+  width:100%;    
+}
+
+div.header{ 
+  position: fixed;
+  top: 0;
+  white-space: nowrap;
+  padding: 10px 15px;
+  margin: 0;
+  z-index: 1;
+  border-top: 1px solid #55AE3A;
+  border-bottom: 1px solid #55AE3A;
+  background-color : white;
+  height: 42px;
+  width: 100%;  
+}
+
+div.header > img{   
+  height: 48px;
+  width: 48px;
+  padding: 0;
+  margin: 0px 20px 0px 20px; 
+}
+
+div.header > a{
+  text-decoration: none;
+}
+
+div.header > a > h2{  
+  vertical-align: 10px;
+  display: inline; 
+  color: green;  
+  font-size: 36px;   
+  margin: 0;  
+  padding: 0;  
+}
+
+div.header > div > a{ 
+  white-space: nowrap;
+  font-size: 24px;
+  color: grey;
+  border: 1px solid grey;
+  padding: 4px 4px;  
+  text-decoration: none;
+}
+
+
+#menu{  
+float: right;
+}
+
+#menuitemss{
+  text-align: left;
+  font-size: 16px;  
+  list-style-type: none;   
+  background-color : #55AE3A;
+  display: none;
+}
+#menuitemss li{  
+  padding: 5px 1px;
+}
+#menuitemss a{  
+  text-decoration: none;  
+  color: black;
+  padding: 5px 1px;
+}
+#menuitemss a:hover{
+  background-color: #ff7b29;  
+}
+
+#main-menu{
+  width: 150px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: none;
+}
+
+
+#search-container{
+  position: relative;
+  left: 200px;
+  display:inline-block;
+  white-space: nowrap;
+  margin: 0, 10px;
+  padding: 0px;
+  border: 1px solid orange;  
+  border-radius: 6px;
+  vertical-align: top;
+  width: 550px;
+}
+
+#search-input{
+  margin: 0;
+  border: 0;
+  font-size: 18px;
+  padding: 0 5px;   
+  width: 474px;
+  height: 36px;
+  border-radius: 6px;
+}
+
+#search-button{
+  /* -moz-appearance : none;*/
+  background-color : #55AE3A;
+  border : none;
+  border-radius: 6px;
+  margin : 0px;  
+  height: 36px;
+  width: 64px;
+  vertical-align: top;
+  padding: 0;
+  background-position: center;
+  background-image : url( "./images/taws-search-icon.png" );  
+  background-repeat: no-repeat;
+  transition: background .2s linear, border-radius 1s ease-in 1s;
+}
+#search-button:hover{
+  background-color: #ff7b29;  
+}
+#search-button:active{
+  background-color : orange;
+}
+
+
+.dialog{
+  display: none;
+}
+
+#loading-alert{
+  display:    none;
+  position:   fixed;
+  z-index:    1000;
+  top:        50%;
+  left:       50%;
+  height:     100%;
+  width:      100%;
+}
+
+
+/****************
+ * Result Items *
+ ****************/
+
+#search-results-container{
+  position: absolute;  
+  top: 75px;
+  left: 320px;  
+  background-color : white;  
+}
+
+.result-item{
+  margin: 0px 0px;  
+  padding: 10px 20px;
+  width: 650px; 
+  border: none;
+}
+.result-item:hover{
+  border: 1px solid grey;
+}
+
+.result-item-posnum{
+  display: inline;  
+  margin: 0 10px 0 0;
+  padding: 0;
+}
+
+.result-item-title{
+  display: inline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+  text-decoration: none; 
+}
+.result-item-description{  
+  margin: 0 0 0 30px;
+  
+  padding: 0;
+  
+  word-wrap: break-word;
+}
+
+.result-item-meta{
+  padding: 0; 
+  margin: 0; 
+  color: grey; 
+  display: block;
+}
+
+.result-item-meta-v2{
+  padding: 0; 
+  margin: 0; 
+  color: grey; 
+  position: relative;
+  top: 100%;  
+  vertical-align: 100%;
+}
+
+.result-item-meta-item{
+  padding: 0; 
+  margin: 0 10px 0 0;   
+  display: block;  
+}
+
+.result-item-schema-http{
+  margin-right: 10px;
+  color: green;
+  text-decoration: none; 
+}
+.result-item-schema-https{  
+  color: blue;
+  text-decoration: none; 
+}
+
+.result-item-domain{  
+  color: black;
+  text-decoration: none; 
+}
+
+.disable{
+  pointer-events: none;
+  margin-right: 10px;
+  color: grey;
+  text-decoration: none; 
+}
+
+
+#spellfix-container{
+  display: none;
+  font-size: 18px;  
+  margin: 10px;
+}
+#did-you-mean{
+  color: red;
+  display: inline;  
+  
+}
+
+
+/****************
+ * The homapage *
+ ****************/
+
+/*************
+ * Taws logo *
+ *************/ 
+#homepage_logo{
+  width: 100px; 
+  height: 100px;  
+  display: block;
+  margin: 150px auto 0 auto;
+  padding: 0;
+}
+#homepage_logo_name{
+  color: green;  
+  font-size: 36px;
+  margin: 0;
+  text-align: center;
+  padding: 0;
+}
+
+/*************************
+ * Search bar and button *
+ *************************/
+
+#homepage_search-container{    
+  white-space: nowrap;
+  margin: 0 auto 200px auto;
+  padding: 0px;  
+  border: 1px solid orange;  
+  border-radius: 6px;  
+  width: 700px;
+}
+#homepage_search-container > input{  
+  width: 624px;
+}
+
+/****************************
+ * Footer for the home page *
+ ****************************/
+#homepage_footer{
+  background-color: AliceBlue;  
+  padding: 0 5px; 
+  margin: 0;
+  border-top: 2px solid #55AE3A;
+}
+
+#homepage_footer > p{
+  font-size: 14px;
+}
+
+#homepage_footer img{
+  vertical-align: middle;
+  width: 115px;
+  height: 26px;
+}
+
+
+/*****************
+ * Advace Search *
+ *****************/
+#advance-search-options{
+  position: fixed;
+  z-index: 0;
+  top: 65px;  
+  /*overflow-y: scroll;*/   
+  font-size: 14px;
+  background-color: white; 
+  padding: 0 0 0 0; 
+  margin: 0;
+  width: 250px;
+  height: calc(100% - 75px);
+}
+/************
+ * Catogory *
+ ************/ 
+#advance-search-options1 > h3{
+  font-size: 18px;
+  padding: 0; 
+  margin: 10px 5px;
+}
+
+/************
+ * Sub Catogory *
+ ************/ 
+#advance-search-options1 > h4{
+  font-size: 16px;
+  padding: 0; 
+  margin: 5px;
+}
+
+#accordion{  
+  
+}
+
+h4{
+    padding: 0;
+    margin: 0;    
+}
+
+.tri-valueg2 > span[]{
+    padding: 0;
+    margin: 0;
+}
+
+
+/* To top */
+#button-top{
+  position: fixed;
+  right: 5px;
+  top: 120px;
+  display: none;
+}
+#button-settings{
+  position:relative;
+  left: 300px;  
+  vertical-align: top;
+}
+
+#settings-selectmenu{
+  display: none;
+  width: 200px;
+}
+
+#tabs{
+  padding: 0;
+  margin: 0;
+  
+}
+
+/* other */
+.ui-tooltip {
+  font-size: 14px;
+}
+
+
+.ui-tabs .ui-tabs-panel {  
+  padding: 0;
+  margin: 0;
+  overflow: hidden !important;
+  
+}
+.ui-tab-content, .ui-tabs-panel{
+  
+}
+/*
+.ui-tabs .ui-tabs-nav li {
+    height:18px;
+    font-size:16px;
+}
+.ui-tabs .ui-tabs-nav li a {
+    position:relative;
+    top:-6px  
+}
+*/
+
+.accordion .ui-accordion-content {
+    /*max-height: 400px;
+    overflow-y: auto; */       
+}
+.accordion select {
+    width: 200px;
+}
+
+.ui-accordion .ui-accordion-content {
+    padding: 20px 10px;  
+}
+

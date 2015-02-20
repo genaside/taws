@@ -1,11 +1,20 @@
 SELECT
   Data.id AS id,
+  CASE 
+    WHEN scheme_id = 1 THEN 
+      CONCAT( 'http://', Domains.domain, '/', COALESCE( page, '' ) )
+    WHEN scheme_id = 2 THEN 
+      CONCAT( 'https://', Domains.domain, '/', COALESCE( page, '' ) )
+    ELSE 'error'
+  END AS page_url, 
   Data.title AS page_title,
-  Data.description AS page_description,
-  CONCAT( Domains.domain, '/', COALESCE( page, '' ) ) AS page_url,
+  Data.description AS page_description,  
+  published_time,
   Data.scheme_id AS page_scheme,
-  Domains.domain AS domain_name
+  Domains.domain AS domain_name,
+  Domains.description AS domain_description,
+  hasmobilesupport
 FROM Data
 INNER JOIN Domains ON Data.domain_id = Domains.id
 WHERE Data.id IN( $ids )
-ORDER BY frequency DESC;
+ORDER BY FIELD( Data.id, $ids );

@@ -1,0 +1,108 @@
+CREATE TABLE IF NOT EXISTS Languages(
+id                 TINYINT UNSIGNED  PRIMARY KEY,
+language           VARCHAR(255)      UNIQUE KEY,
+full_name          VARCHAR(32)       UNIQUE KEY, 
+natural_name       VARCHAR(32)       UNIQUE KEY
+);
+
+CREATE TABLE IF NOT EXISTS Types(
+id                 TINYINT UNSIGNED  PRIMARY KEY,
+type               VARCHAR(32)      UNIQUE KEY
+);
+
+CREATE TABLE IF NOT EXISTS Subjects(
+id                 TINYINT UNSIGNED  PRIMARY KEY,
+subject            VARCHAR(32)      UNIQUE KEY
+);
+
+CREATE TABLE IF NOT EXISTS FileTypes(
+id                 TINYINT UNSIGNED  PRIMARY KEY,
+type               VARCHAR(32)      UNIQUE KEY
+);
+
+CREATE TABLE IF NOT EXISTS Domains(
+id                 INT UNSIGNED      PRIMARY KEY, 
+domain             VARCHAR(255)      UNIQUE KEY   NOT NULL,
+http_https         TINYINT UNSIGNED  NOT NULL,
+type_id            TINYINT UNSIGNED  NOT NULL,
+subject_id         TINYINT UNSIGNED  NOT NULL,
+description        TEXT,
+hasmobilesupport   TINYINT UNSIGNED,
+FOREIGN KEY( type_id ) REFERENCES Types( id ) ON DELETE CASCADE,
+FOREIGN KEY( subject_id ) REFERENCES Subjects( id ) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Data( 
+id             INT UNSIGNED  PRIMARY KEY,
+page           TEXT,
+domain_id      INT UNSIGNED,
+title          TEXT,
+description    TEXT,
+content        TEXT,
+language_id    TINYINT UNSIGNED,
+published_time INT UNSIGNED,
+timestamp      INT UNSIGNED,
+frequency      MEDIUMINT UNSIGNED,
+scheme_id      TINYINT UNSIGNED,
+FOREIGN KEY( domain_id ) REFERENCES Domains( id ) ON DELETE CASCADE,
+FOREIGN KEY( language_id ) REFERENCES Languages( id ) ON DELETE CASCADE,
+INDEX data_idx1 ( timestamp ),
+INDEX data_idx2 ( frequency )
+);
+
+CREATE TABLE IF NOT EXISTS Data_RSS( 
+id             INT UNSIGNED  PRIMARY KEY,
+page           TEXT,
+domain_id      INT UNSIGNED,
+title          TEXT,
+description    TEXT,
+language_id    TINYINT UNSIGNED,
+timestamp      INT UNSIGNED,
+frequency      MEDIUMINT UNSIGNED,
+scheme_id      TINYINT UNSIGNED,
+FOREIGN KEY( domain_id ) REFERENCES Domains( id ) ON DELETE CASCADE,
+FOREIGN KEY( language_id ) REFERENCES Languages( id ) ON DELETE CASCADE,
+INDEX data_rss_idx1 ( timestamp ),
+INDEX data_rss_idx2 ( frequency )
+);
+
+CREATE TABLE IF NOT EXISTS Data_Files(
+id             INT UNSIGNED  PRIMARY KEY,
+page           TEXT,
+domain_id      INT UNSIGNED,
+description    TEXT,
+filename       TEXT,
+filetype_id    TINYINT UNSIGNED,
+filesize       INT UNSIGNED,
+last_modified  INT UNSIGNED,
+scheme_id      TINYINT UNSIGNED,
+timestamp      INT UNSIGNED,
+frequency      MEDIUMINT UNSIGNED,
+FOREIGN KEY( domain_id ) REFERENCES Domains( id ) ON DELETE CASCADE,
+FOREIGN KEY( filetype_id ) REFERENCES FileTypes( id ) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS ubm(
+query_id  INT UNSIGNED  NOT NULL,
+data_id   INT UNSIGNED  NOT NULL,
+rank      INT UNSIGNED  NOT NULL,
+FOREIGN KEY( data_id ) REFERENCES Data( id ) ON DELETE CASCADE,
+UNIQUE KEY( query_id, data_id ),
+INDEX rank_idx ( rank )
+);
+
+CREATE TABLE IF NOT EXISTS uq(
+id       INT UNSIGNED  PRIMARY KEY,
+query    VARCHAR(255)  UNIQUE KEY   NOT NULL,
+INDEX query_idx ( query )
+);
+
+CREATE TABLE IF NOT EXISTS Cleanup(
+data_id INT UNSIGNED, 
+data_rss_id INT UNSIGNED, 
+data_files_id INT UNSIGNED,
+FOREIGN KEY( data_id ) REFERENCES Data( id ) ON DELETE CASCADE,
+FOREIGN KEY( data_rss_id ) REFERENCES Data_RSS( id ) ON DELETE CASCADE,
+FOREIGN KEY( data_files_id ) REFERENCES Data_Files( id ) ON DELETE CASCADE
+);

@@ -1,15 +1,24 @@
 SELECT
   Data.id AS id,
+  CASE 
+    WHEN scheme_id = 1 THEN 
+      CONCAT( 'http://', Domains.domain, '/', COALESCE( page, '' ) )
+    WHEN scheme_id = 2 THEN 
+      CONCAT( 'https://', Domains.domain, '/', COALESCE( page, '' ) )
+    ELSE 'error'
+  END AS page_url, 
   Data.title AS page_title,
-  Data.description AS page_description,
-  CONCAT( Domains.domain, '/', COALESCE( page, '' ) ) AS page_url,
+  Data.description AS page_description,   
+  published_time,
   Data.scheme_id AS page_scheme,
   Domains.domain AS domain_name,
-  data_id
+  Domains.description AS domain_description,
+  data_id,
+  hasmobilesupport
 FROM ubm
 INNER JOIN(
   Data INNER JOIN Domains ON Data.domain_id = Domains.id
 )ON Data.id = data_id
+INNER JOIN uq ON uq.id = query_id
 WHERE query = ? $conditions
-ORDER BY rank DESC
 LIMIT ? OFFSET ?;

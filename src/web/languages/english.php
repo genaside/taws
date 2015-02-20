@@ -1,4 +1,8 @@
 <?php
-  $lang_code = 'en';
-  $main_page_title = 'Taws A Truly Anonymous Web Search';
+
+  $language = array();  
+  $language[ 'ISO_CODE' ] = 'en';
+  $language[ 'HOMEPAGE_HTML_HEADER_TITLE' ] = 'Taws A Truly Anonymous Web Search';
+  $language[ 'HOMEPAGE_HTML_HEADER_DESCRIPTION' ] = 'Search from the privacy of your own server';
+ 
 ?>

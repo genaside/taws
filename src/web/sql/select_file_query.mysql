@@ -1,0 +1,14 @@
+SELECT         
+  CASE 
+    WHEN scheme_id = 1 THEN 'http' 
+    WHEN scheme_id = 2 THEN 'https' 
+    ELSE 'not supported yet'
+  END AS scheme,
+  CONCAT( Domains.domain, '/', COALESCE( page, '' ) ) AS page_url,
+  Data_Files.description AS description,
+  filename,
+  filesize,
+  last_modified
+FROM Data_Files 
+INNER JOIN Domains ON Data_Files.domain_id = Domains.id
+WHERE Data_Files.id $ids;

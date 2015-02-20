@@ -1,6 +1,6 @@
 #!/bin/bash
-exit
-
+exit 
+# Dont use this script
 
 cert_dir='/etc/ssl/taws/' 
 site_dir='/var/www/taws/'

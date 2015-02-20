@@ -1,0 +1,73 @@
+SET FOREIGN_KEY_CHECKS = 0;
+SET UNIQUE_CHECKS = 1;
+SET AUTOCOMMIT = 0;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/domains.csv' REPLACE INTO TABLE Domains 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+(id,domain,http_https,type_id,subject_id,@vdescription,@vhasmobilesupport)
+SET
+description = nullif(@vdescription,''),
+hasmobilesupport = nullif(@vhasmobilesupport,'');
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/data.csv' REPLACE INTO TABLE Data 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+(id,page,domain_id,title,description,@vcontent,language_id,@vpublished_time,timestamp,frequency,scheme_id)
+SET
+content = nullif(@vcontent,''),
+published_time = nullif(@vpublished_time,'');
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/data_files.csv' REPLACE INTO TABLE Data_Files
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES
+(id,page,domain_id,description,filename,filetype_id,filesize,last_modified,scheme_id,timestamp,frequency);
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/data_rss.csv' REPLACE INTO TABLE Data_RSS 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+(id,page,domain_id,title,description,language_id,timestamp,frequency,scheme_id);
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/ubm.csv' REPLACE INTO TABLE ubm 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+( query_id, data_id, rank );
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/languages.csv' REPLACE INTO TABLE Languages 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+( id, language, full_name, natural_name );
+
+LOAD DATA LOCAL INFILE './serverdata/dump/uq.csv' IGNORE INTO TABLE uq 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+( id, query );
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/types.csv' REPLACE INTO TABLE Types 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+(id,type);
+
+LOAD DATA LOCAL INFILE './serverdata/dump/subjects.csv' IGNORE INTO TABLE Subjects 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+( id, subject );
+
+LOAD DATA LOCAL INFILE './serverdata/dump/filetypes.csv' REPLACE INTO TABLE FileTypes 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+(id,type);
+
+LOAD DATA LOCAL INFILE './serverdata/dump/purge.csv' REPLACE INTO TABLE Cleanup 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+(data_id, data_rss_id, data_files_id);
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+DELETE FROM Cleanup;
+
+COMMIT;
+
+SET AUTOCOMMIT = 1;

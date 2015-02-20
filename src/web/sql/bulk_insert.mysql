@@ -1,0 +1,67 @@
+SET sql_mode='NO_AUTO_VALUE_ON_ZERO';
+SET FOREIGN_KEY_CHECKS = 0;
+SET UNIQUE_CHECKS = 0;
+SET AUTOCOMMIT = 0;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/domains.csv' INTO TABLE Domains 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+(id,domain,http_https,type_id,subject_id,@vdescription,@vhasmobilesupport)
+SET
+description = nullif(@vdescription,''),
+hasmobilesupport = nullif(@vhasmobilesupport,'');
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/data.csv' INTO TABLE Data 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+(id,page,domain_id,title,description,@vcontent,language_id,@vpublished_time,timestamp,frequency,scheme_id)
+SET
+content = nullif(@vcontent,''),
+published_time = nullif(@vpublished_time,'');
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/data_rss.csv' INTO TABLE Data_RSS 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+(id,page,domain_id,title,description,language_id,timestamp,frequency,scheme_id);
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/data_files.csv' INTO TABLE Data_Files
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+(id,page,domain_id,description,filename,filetype_id,filesize,last_modified,scheme_id,timestamp,frequency);
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/ubm.csv' INTO TABLE ubm 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+( query_id, data_id, rank );
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/languages.csv' INTO TABLE Languages 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+( id, language, full_name, natural_name );
+
+SET FOREIGN_KEY_CHECKS = 1;
+SET UNIQUE_CHECKS = 1;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/uq.csv' IGNORE INTO TABLE uq 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+( id, query );
+
+COMMIT;
+
+LOAD DATA LOCAL INFILE './serverdata/dump/types.csv' IGNORE INTO TABLE Types 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+( id, type );
+
+LOAD DATA LOCAL INFILE './serverdata/dump/filetypes.csv' IGNORE INTO TABLE FileTypes 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+( id, type );
+
+LOAD DATA LOCAL INFILE './serverdata/dump/subjects.csv' IGNORE INTO TABLE Subjects 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES 
+( id, subject );
+
+COMMIT;

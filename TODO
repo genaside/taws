@@ -8,23 +8,9 @@ A List of things I need to do and/or need help with.
 
 
 
-Stuff todo for first beta release 0.0.1
-# Think about how to add sphinx files like stopwords of different languages
-  The user will hanndle that
-+ Need to stucture language component to allow the selection of different langauges
-- Add atleast 1 more language besides english
-- Add support for a total of 5 languages
-# Add a scroll to top button for the web page
-# Change the auto complete from using the word database to using the "ubm" database
+Stuff todo for beta release 0.0.3
+- Add more lanuages and stopwords
 - Need to find a better spell checker method then pspell, or maybe iam using it wrong
-# Create some type of Logger, 
-# Add logger to critical functions, or do it periodicly. 
 ^ Create installer(i dont know about this)
-- site Design for mobile.
-# Have a updater.
-+ IF a functions looks to big, dont worry it will be broken up when things get shared
-# tooltip for most things.
-# For single words find dictionary sites and other site to populate UMB, hit 3 birds with on stone.
-- Add another php file, so server.php can send prefetch data to it and retrieve it for later.
-- Add some little images and options to results to indicate 'domain has been red flagged by comminty',
-  'url is broken or has WRONG information', and maybe some other stuff.
+- Add another php file, so server.php can get data from prefected data. Like loading additon data in the background
+
